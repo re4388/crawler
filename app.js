@@ -18,7 +18,7 @@ const fs = require('fs');
 // console.log(check) => <html><head></head><body><h2 class="title welcome">Hello there!</h2></body></html>
 
 
-const URL = "https://www.flipkart.com/search?q=mobiles";
+const URL = "https://news.ycombinator.com/";
 
 
 
@@ -30,23 +30,41 @@ request(URL, function (err, res, body) {
     else {
         const arr = [];
         let $ = cheerio.load(body);  //loading of complete HTML body
-
-        $('div._1HmYoV > div.col-12-12 > div._3O0U0u').each(function (index) {
-            const link = $(this).find('div._1UoZlX>a').attr('href');
-            const name = $(this).find('div._1-2Iqu>div.col-7-12>div._3wU53n').text();
-            // console.log(link);   
-            // console.log(name);   
+        $('tbody > .athing').each(function (index) {
+            let link = $(this).find('td.title > a').attr('href');
+            let name = $(this).find('td.title > a').text()
             const obj = {
-                link: link,
-                name: name,
+                name:name,
+                link:link,
             }
+            arr.push(obj)
+        })
+        // console.log(arr)
+    }
+});
+
+
+
+// console.log($.html())
+
+
+        // $('table.itemlist > div.col-12-12 > div._3O0U0u').each(function (index) {
+        //     const link = $(this).find('div._1UoZlX>a').attr('href');
+        //     const name = $(this).find('div._1-2Iqu>div.col-7-12>div._3wU53n').text();
+        //     // console.log(link);   
+        //     // console.log(name);   
+        //     const obj = {
+        //         link: link,
+        //         name: name,
+        //     }
 
             //要字串化stringify，否則用fs.writeFile寫不入txt檔案
             //就算用writeStream.write可以執行，txt檔案也是顯示 [object Object]
             // arr.push(JSON.stringify(obj));
-            arr.push(obj)
-            console.log(arr)
-        });
+
+            // arr.push(obj)
+            // console.log(arr)
+        // });
 
         // save into file
         // let arr1 = arr.toString();
@@ -78,9 +96,6 @@ request(URL, function (err, res, body) {
 
         // // close the stream
         // writeStream.end();
-    }
-});
-
 
 
 
